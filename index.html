@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>ESP32 Intruder Alert System</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin-top: 40px;
+      background-color: #f0f0f0;
+    }
+    
+    #alert {
+      font-size: 28px;
+      color: red;
+      margin-top: 20px;
+      display: none;
+    }
+    
+    #webcam-container {
+      position: relative;
+      max-width: 80%;
+      margin: 0 auto;
+      border: 3px solid red;
+      overflow: hidden;
+    }
+    
+    #webcam {
+      width: 100%;
+      height: auto;
+      display: block; /* Ensure the image is displayed */
+    }
+    
+    #closeBtn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      padding: 10px 20px;
+      background-color: #fff;
+      border: 1px solid #ccc;
+      cursor: pointer;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <h1>ESP32 Intruder Alert System</h1>
+  <button onclick="logout()">Logout</button>
+  
+  <div id="alert">🚨 INTRUDER DETECTED 🚨</div>
+  
+  <div id="webcam-container">
+    <img id="webcam" src="{{ url_for('video_feed') }}" alt="Live Feed">
+    <button id="closeBtn" onclick="closeCamera()">Close Camera</button>
+  </div>
+
+  <script>
+    function logout() {
+      fetch('/logout', { method: 'POST' })
+        .then(() => window.location.href = '/login');
+    }
+
+    function showCamera() {
+      document.getElementById('webcam').style.display = 'block';
+      document.getElementById('alert').style.display = 'block';
+      document.getElementById('closeBtn').style.display = 'block';
+    }
+
+    function closeCamera() {
+      document.getElementById('webcam').style.display = 'none';
+      document.getElementById('alert').style.display = 'none';
+      document.getElementById('closeBtn').style.display = 'none';
+    }
+
+    setInterval(() => {
+      fetch('/status')
+        .then(response => response.json())
+        .then(data => {
+          if (data.triggered) {
+            showCamera();
+          } else {
+            closeCamera();
+          }
+        });
+    }, 2000);
+  </script>
+</body>
+</html>
