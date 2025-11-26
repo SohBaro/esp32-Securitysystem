@@ -33,7 +33,7 @@ An IoT-based security solution that transforms an ESP32 into a smart surveillanc
 
 ---
 
-## 🏗️ Technical Architecture
+##  Technical Architecture
 
 The project operates in a client-server model:
 
@@ -45,7 +45,7 @@ The project operates in a client-server model:
 
 ---
 
-## 🚀 Installation & Setup
+##  Installation & Setup
 
 ### 1. Firmware Setup (Arduino IDE)
 1.  Open the `.ino` file in **Arduino IDE**.
